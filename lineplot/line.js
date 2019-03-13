@@ -27,10 +27,18 @@ var line = d3.line()
 // 8. An array of objects of length N. Each object has key -> value pair, the key being "y" and the value is a random number
 //var dataset = d3.range(n).map(function(d) { return {"y": d3.randomUniform(1)() } })
 
+/*
 d3.csv("bar.csv").then(function(data) {
   dataset = data.one;
   console.log(data);
 });
+*/
+var dataset = d3.csv("bar.csv").then(function(data) {
+  console.log("data", data);
+  myfunc(data);
+});
+
+//console.log("dataset", dataset);
 
 // 1. Add the SVG to the page and employ #2
 var svg = d3.select("body").append("svg")
@@ -50,12 +58,13 @@ svg.append("g")
     .attr("class", "y axis")
     .call(d3.axisLeft(yScale)); // Create an axis component with d3.axisLeft
 
+function myfunc(dataset){
 // 9. Append the path, bind the data, and call the line generator
 svg.append("path")
     .datum(dataset) // 10. Binds data to the line
     .attr("class", "line") // Assign a class for styling
     .attr("d", line); // 11. Calls the line generator
-
+}
 // 12. Appends a circle for each datapoint
 svg.selectAll(".dot")
     .data(dataset)
