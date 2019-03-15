@@ -3,25 +3,11 @@ var margin = {top: 20, right: 20, bottom: 70, left: 40},
     width = 600 - margin.left - margin.right,
     height = 300 - margin.top - margin.bottom;
 
-// Parse the date / time
-//var	parseDate = d3.timeFormat("%Y-%m").parse;
 var parseDate = d3.timeParse("%Y-%m");
 
-//var x = d3.scaleOrdinal().rangeRoundBands([0, width], .05);
-var x = d3.scaleBand().rangeRound([0, width]);
+//var x = d3.scaleBand().rangeRound([0, width]);
+var x = d3.scaleLinear().range([0, width]);
 var y = d3.scaleLinear().range([height, 0]);
-
-/*
-var xAxis = d3.svg.axis()
-    .scale(x)
-    .orient("bottom")
-    .tickFormat(d3.time.format("%Y-%m"));
-
-var yAxis = d3.svg.axis()
-    .scale(y)
-    .orient("left")
-    .ticks(10);
-*/
 
 var xAxis = d3.axisBottom(x).tickFormat(function(d){return d.x});
 var yAxis = d3.axisLeft(y);
@@ -34,13 +20,11 @@ var svg = d3.select("body").append("svg")
           "translate(" + margin.left + "," + margin.top + ")");
 
 d3.csv("bar-data.csv", function(data) {
-//    data.forEach(function(d) {
     for (var d in data) {
         d.date = parseDate(d.date);
         d.value = +d.value;
     };
 
-  //x.domain(data.map(function(d) { return d.date; }));
   x.domain(data.date);
   y.domain([0, d3.max(data, function(d) { return d.value; })]);
 
@@ -69,8 +53,6 @@ d3.csv("bar-data.csv", function(data) {
     .enter().append("rect")
       .style("fill", "steelblue")
       .attr("x", function(d) { return x(d.date); })
-      //.attr("width", x.rangeBand())
-      .attr("width", x.bandwidth())
       .attr("y", function(d) { return y(d.value); })
       .attr("height", function(d) { return height - y(d.value); });
 
