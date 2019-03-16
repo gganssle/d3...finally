@@ -25,25 +25,20 @@ var line = d3.line()
 
 // 8. An array of objects of length N. Each object has key -> value pair, the key being "y" and the value is a random number
 var olddataset = d3.range(n).map(function(d) { return {"y": d3.randomUniform(1)() } })
-console.log('olddataset', typeof olddataset)
+console.log(typeof olddataset)
 console.log(olddataset)
 
-d3.csv("bar-data.csv").then(function(dataset) {
-  // convert strings to floats
-  for (i = 0; i < dataset.length; i++) {
-    dataset[i].value = +dataset[i].value
-  };
+d3.csv("bar-data.csv", function(dataset) {
+    //for (var d in dataset) {
+        //d.date = d.date;
+        //d.value = +d.value;
+        //d += d.value;
+    //};
 
-  // eliminate `columns: Array(1)`
-  dataset = dataset.map(function(vals,index) { return {"value": vals['value']}; });
+  newdataset = d3.range(n).map(function(d) { return {"value": dataset.value } })
 
-  console.log('dataset', typeof dataset);
-  console.log(dataset);
-  console.log(dataset.length);
-  console.log(dataset.value);
-  //var col = dataset.map(function(vals,index) { return vals['value']; });
-  //console.log('col', col);
-
+  console.log(typeof newdataset);
+  console.log(newdataset);
 
   // 1. Add the SVG to the page and employ #2
   var svg = d3.select("body").append("svg")
@@ -65,14 +60,13 @@ d3.csv("bar-data.csv").then(function(dataset) {
 
   // 9. Append the path, bind the data, and call the line generator
   svg.append("path")
-      .datum(dataset) // 10. Binds data to the line
+      .datum(dataset.value) // 10. Binds data to the line
       .attr("class", "line") // Assign a class for styling
       .attr("d", line); // 11. Calls the line generator
 
-
   // 12. Appends a circle for each datapoint
   svg.selectAll(".dot")
-      .data(dataset)
+      .data(dataset.value)
     .enter().append("circle") // Uses the enter().append() method
       .attr("class", "dot") // Assign a class for styling
       .attr("cx", function(d, i) { return xScale(i) })
