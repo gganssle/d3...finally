@@ -44,20 +44,25 @@ function dashboard(id, indata) {
       .datum(indata)
       .attr("class", "line")
       .attr("d", line)
-      .attr("fill", 0.3);
 
   svg.selectAll(".dot")
       .data(indata)
     .enter().append("circle")
       .attr("class", "dot")
+      //.attr("fill", "blue")
       .attr("cx", function(d, i) { return xScale(i) })
       .attr("cy", function(d) { return yScale(d.one) })
       .attr("r", 5)
-        .on("mouseover", function(a) {
-    			console.log(a);
-          // try using the tooltip functionality from zoom/scatter.js to pop open the dot
-  		    })
-        .on("mouseout", function() {  })
+        .on("mouseover", bubbleon)
+        .on("mouseout", bubbleoff)
+
+    function bubbleon(d) {
+      console.log(d);
+      d3.select(this).classed("active", true);
+    };
+    function bubbleoff(d) {
+      svg.selectAll(".active").classed("active", false);
+    };
 };
 
 
