@@ -6,7 +6,10 @@ body{
 path {  stroke: #A9A9A9; }
 path:hover {  opacity:0.8; }
 
-.line { fill: none }
+.line {
+  fill: none;
+  stroke-width: 4
+}
 
 .axis {  font: 10px sans-serif; }
 
@@ -30,7 +33,8 @@ path:hover {  opacity:0.8; }
 }
 
 .focus circle {
-  fill: #F1F3F3;
+  /*fill: #F1F3F3;*/
+  fill: #CCF1F3F3;
   stroke: #6F257F;
   stroke-width: 5px;
 }

@@ -59,11 +59,11 @@ function dashboard(id, indata) {
           .style("display", "none");
 
       focus.append("circle")
-          .attr("r", 10);
+          .attr("r", 20);
 
       focus.append("text")
-          .attr("x", 15)
-        	.attr("dy", ".31em");
+          .attr("x", -20)
+        	.attr("dy", -30);
 
       focus.append("line")
           .attr("class", "x-hover-line hover-line")
@@ -78,7 +78,7 @@ function dashboard(id, indata) {
           .attr("class", "dot")
           .attr("cx", function(d, i) { return xScale(i) })
           .attr("cy", function(d) { return yScale(d.one) })
-          .attr("r", 5)
+          .attr("r", 10)
           .on("mouseover", bubbleon)
           .on("mouseout", bubbleoff)
           .on("mousemove", bubbleon)
@@ -112,8 +112,10 @@ function dashboard(id, indata) {
 
     function pieChart(pD) {
       var pC = {};
+      var f = d3.format(".3n")
 
       function segColor(c){ return {one:"#807dba", two:"#e08214", three:"#41ab5d"}[c]; }
+      function txtColor(c){ return {one:"#2c2b42", two:"#7a470b", three:"#1a4425"}[c]; }
 
       var piesvg = d3.select(id).append("svg")
         .attr("width", piewidth).attr("height", pieheight).append("g")
@@ -125,29 +127,45 @@ function dashboard(id, indata) {
 
       var g = piesvg.selectAll(".arc")
         .data(pie(pD))
-        .enter().append("path")
+        .enter().append("g");
+
+      g.append("path")
         .attr("d", arc)
         .each(function(d) { this._current = d; })
         .style("fill", function(d) { return segColor(d.data.type); })
 
-      // TODO: get the text running
       g.append("text")
         .attr("transform", function(d) {
           var _d = arc.centroid(d);
-          //_d[0] *= 1.5;
-          //_d[1] *= 1.5;
-          console.log(_d)
           return "translate(" + _d + ")";
         })
         .attr("dy", ".50em")
         .style("text-anchor", "middle")
+        .style("fill", function(d) { return txtColor(d.data.type); })
+        .style("font-weight", "bold")
         .text(function(d) {
-          return d.data.perc;
+          return f(d.data.perc);
         })
 
       pC.update = function(nD){
-          piesvg.selectAll("path").data(pie(nD)).transition().duration(500)
-              .attrTween("d", arcTween);
+          piesvg.selectAll("path").data(pie(nD))
+            .transition().duration(500).attrTween("d", arcTween);
+
+          piesvg.selectAll("text").data(pie(nD))
+
+            .attr("dy", ".50em")
+            .style("text-anchor", "middle")
+            .style("fill", function(d) { return txtColor(d.data.type); })
+            .style("font-weight", "bold")
+            .text(function(d) {
+              return f(d.data.perc);
+            })
+            .transition()
+              .duration(500)
+              .attr("transform", function(d) {
+                var _d = arc.centroid(d);
+                return "translate(" + _d + ")";
+              })
       }
 
       function arcTween(a) {
