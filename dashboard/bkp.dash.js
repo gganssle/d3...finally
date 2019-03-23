@@ -5,8 +5,6 @@ function dashboard(id, fData){
     // compute total for each state.
     fData.forEach(function(d){d.total=d.freq.low+d.freq.mid+d.freq.high;});
 
-    console.log(fData);
-
     // function to handle histogram.
     function histoGram(fD){
         var hG={},    hGDim = {t: 60, r: 0, b: 30, l: 0};

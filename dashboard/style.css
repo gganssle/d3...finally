@@ -1,6 +1,7 @@
 body{
     width:1060px;
     margin:50px auto;
+    background-color: #d8e5f4;
 }
 path {  stroke: #A9A9A9; }
 path:hover {  opacity:0.8; }
@@ -24,7 +25,18 @@ path:hover {  opacity:0.8; }
   bottom: 60px;
 }
 
-.dot.active{
-  stroke: red;
-  stroke-width: 10px;
+.focus text {
+  font-weight: bold;
+}
+
+.focus circle {
+  fill: #F1F3F3;
+  stroke: #6F257F;
+  stroke-width: 5px;
+}
+
+.hover-line {
+  stroke: #6F257F;
+  stroke-width: 2px;
+  stroke-dasharray: 3,3;
 }
